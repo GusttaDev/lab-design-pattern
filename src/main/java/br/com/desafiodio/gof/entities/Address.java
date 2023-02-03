@@ -9,13 +9,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Address {
+public class Address implements Serializable {
+
+    private static final long serialVersionUID = -7718434260152342075L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
