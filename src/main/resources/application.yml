@@ -17,3 +17,7 @@ spring:
 server:
   error:
     include-message: always
+
+via:
+  cep:
+    url: https://viacep.com.br/ws/

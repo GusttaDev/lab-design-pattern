@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -22,8 +23,13 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
     private String phone;
     @ManyToOne
     private Address address;
+
+    public Optional<Address> getAddress() {
+        return Optional.ofNullable(address);
+    }
 }
