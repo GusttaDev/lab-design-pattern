@@ -13,6 +13,7 @@ import br.com.desafiodio.gof.request.CustomerRequest;
 import br.com.desafiodio.gof.servicies.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findById(Long id) {
-        Customer customer = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não localizado!"));
+        Customer customer = findCustomerById(id);
         return CustomerDTO.convert(customer);
     }
 
@@ -74,14 +75,24 @@ public class CustomerServiceImpl implements CustomerService {
         Address addressEntity = Address.convert(addressDTO);
         return addressRepository.save(addressEntity);
     }
-
+    @Transactional
     @Override
     public CustomerDTO update(Long id, CustomerEditDTO customerEditDTO) {
-        return null;
+        Customer customerEntity = findCustomerById(id);
+
+        customerEntity.setName(customerEditDTO.getName());
+        customerEntity.setGender(GenderType.getGenderType(customerEditDTO.getGenderType()));
+        customerEntity.setPhone(customerEditDTO.getPhone());
+
+        return CustomerDTO.convert(customerEntity);
     }
 
     @Override
     public void delete(Long id) {
 
+    }
+
+    private Customer findCustomerById(Long id) {
+        return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não localizado!"));
     }
 }
