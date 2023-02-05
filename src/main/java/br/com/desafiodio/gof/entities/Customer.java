@@ -1,10 +1,7 @@
 package br.com.desafiodio.gof.entities;
 
 import br.com.desafiodio.gof.entities.enums.GenderType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,9 +17,9 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = -3805337747722460215L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     @Enumerated(EnumType.STRING)
     private GenderType gender;
     private String phone;
