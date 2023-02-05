@@ -7,11 +7,16 @@ import br.com.desafiodio.gof.dtos.CustomerEditDTO;
 import br.com.desafiodio.gof.entities.Address;
 import br.com.desafiodio.gof.entities.Customer;
 import br.com.desafiodio.gof.entities.enums.GenderType;
+import br.com.desafiodio.gof.exception.DatabaseException;
+import br.com.desafiodio.gof.exception.ResourceNotFoundException;
 import br.com.desafiodio.gof.repositories.AddressRepository;
 import br.com.desafiodio.gof.repositories.CustomerRepository;
 import br.com.desafiodio.gof.request.CustomerRequest;
 import br.com.desafiodio.gof.servicies.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private Address findAddressByZipcode(String zipcode) {
-       return addressRepository.findByZipcode(zipcode).orElseGet(() -> getAddressByViaCep(zipcode));
+        return addressRepository.findByZipcode(zipcode).orElseGet(() -> getAddressByViaCep(zipcode));
     }
 
     private Address getAddressByViaCep(String zipcode) {
@@ -75,6 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
         Address addressEntity = Address.convert(addressDTO);
         return addressRepository.save(addressEntity);
     }
+
     @Transactional
     @Override
     public CustomerDTO update(Long id, CustomerEditDTO customerEditDTO) {
@@ -89,10 +95,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void delete(Long id) {
-
+        try {
+            customerRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DatabaseException(ex.getMessage());
+        }
     }
 
     private Customer findCustomerById(Long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não localizado!"));
+        return customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }

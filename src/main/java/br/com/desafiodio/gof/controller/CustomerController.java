@@ -22,12 +22,18 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> findCustomerById(@PathVariable("id") Long id){
+    public ResponseEntity<CustomerDTO> findCustomerById(@PathVariable Long id){
         return ResponseEntity.ok(customerService.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDTO> update(@PathVariable("id") Long id, @RequestBody CustomerEditDTO customerEditDTO){
+    public ResponseEntity<CustomerDTO> update(@PathVariable Long id, @RequestBody CustomerEditDTO customerEditDTO){
         return ResponseEntity.ok().body(customerService.update(id, customerEditDTO));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        customerService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
