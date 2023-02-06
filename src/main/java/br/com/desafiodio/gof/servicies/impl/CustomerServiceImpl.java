@@ -16,7 +16,6 @@ import br.com.desafiodio.gof.servicies.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +46,6 @@ public class CustomerServiceImpl implements CustomerService {
         Address address = findAddressByZipcode(zipcode);
         Customer customer = createCustomer(customerRequest, address);
 
-
         return buildCustomerDTO(customer, address);
     }
 
@@ -72,13 +70,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private Address findAddressByZipcode(String zipcode) {
-        return addressRepository.findByZipcode(zipcode).orElseGet(() -> getAddressByViaCep(zipcode));
+        return addressRepository.findByZipcode(zipcode).orElseGet(() -> createAddress(zipcode));
     }
 
-    private Address getAddressByViaCep(String zipcode) {
-        AddressDTO addressDTO = viaCepApi.findAddressByZipcode(zipcode);
+    private Address createAddress(String zipcode) {
+        AddressDTO addressDTO = getAddressByZipcode(zipcode);
         Address addressEntity = Address.convert(addressDTO);
         return addressRepository.save(addressEntity);
+    }
+
+    private AddressDTO getAddressByZipcode(String zipcode) {
+        return viaCepApi.findAddressByZipcode(zipcode);
     }
 
     @Transactional

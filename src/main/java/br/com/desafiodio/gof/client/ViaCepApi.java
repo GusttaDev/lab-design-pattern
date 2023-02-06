@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(value = "viaCep", url = "${via.cep.url}")
 public interface ViaCepApi {
-
     @GetMapping("{zipcode}/json")
     AddressDTO findAddressByZipcode(@PathVariable("zipcode") String zipcode);
 }

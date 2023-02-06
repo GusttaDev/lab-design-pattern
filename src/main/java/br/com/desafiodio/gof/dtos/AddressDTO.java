@@ -4,10 +4,6 @@ import br.com.desafiodio.gof.utils.Utils;
 import lombok.*;
 
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class AddressDTO {
 
     private String cep;

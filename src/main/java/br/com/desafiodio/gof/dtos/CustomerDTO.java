@@ -6,10 +6,7 @@ import br.com.desafiodio.gof.entities.enums.GenderType;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CustomerDTO {
 
     private Long id;
