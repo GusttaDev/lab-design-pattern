@@ -5,9 +5,11 @@ import br.com.desafiodio.gof.dtos.CustomerEditDTO;
 import br.com.desafiodio.gof.request.CustomerRequest;
 import br.com.desafiodio.gof.servicies.impl.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "customers")
@@ -18,7 +20,11 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDTO> create(@RequestBody CustomerRequest request){
-        return ResponseEntity.ok(customerService.create(request));
+        CustomerDTO customerDTO = customerService.create(request);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(customerDTO.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(customerDTO);
     }
 
     @GetMapping("/{id}")
