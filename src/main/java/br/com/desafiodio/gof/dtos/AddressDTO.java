@@ -18,6 +18,6 @@ public class AddressDTO {
     private String siafi;
 
     public void setCep(String cep) {
-        this.cep = Utils.removeHyphenZipcode(cep);
+        this.cep = Utils.removeCharacterEspecialZipcode(cep);
     }
 }

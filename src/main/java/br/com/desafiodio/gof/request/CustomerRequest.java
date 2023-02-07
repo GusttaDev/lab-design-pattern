@@ -1,6 +1,5 @@
 package br.com.desafiodio.gof.request;
 
-import br.com.desafiodio.gof.entities.enums.GenderType;
 import br.com.desafiodio.gof.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +16,9 @@ public class CustomerRequest {
     private String name;
     private String genderType;
     private String phone;
-   private String zipcode;
+    private String zipcode;
 
     public void setZipcode(String zipcode) {
-        this.zipcode = Utils.removeHyphenZipcode(zipcode);
+        this.zipcode = Utils.removeCharacterEspecialZipcode(zipcode);
     }
 }
