@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CustomerRequest {
 
-    private Long id;
     private String name;
     private String genderType;
     private String phone;

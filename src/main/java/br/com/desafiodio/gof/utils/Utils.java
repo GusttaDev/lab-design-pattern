@@ -14,6 +14,5 @@ public class Utils {
         }
 
         return zipcode;
-
     }
 }
