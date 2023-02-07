@@ -1,7 +1,5 @@
 package br.com.desafiodio.gof.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class Utils {
 
     /**
@@ -10,6 +8,12 @@ public class Utils {
      * @apiNote StringUtils é mais performatico do que o replace do String do java.
      * */
     public static String removeCharacterEspecialZipcode(String zipcode){
-        return StringUtils.replace(zipcode, "\\D","");
+
+        if (!zipcode.matches("[0-9]*")) {
+            zipcode = zipcode.replaceAll("\\D", "");
+        }
+
+        return zipcode;
+
     }
 }
